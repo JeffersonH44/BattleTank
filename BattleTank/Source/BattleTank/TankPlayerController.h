@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Tank.h"
+#include "Engine/World.h"
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
@@ -15,13 +16,23 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
-public:
+private:
 	virtual void Tick(float DeltaTime) override;
 	virtual void BeginPlay() override;
 
-private:
 	ATank * GetControlledTank() const;
 
 	// Move the tank barrel towards the crosshair point (Widget)
 	void AimTowardsCrosshair();
+	bool GetSightRayHitLocation(FVector& HitLocation) const;
+
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& WorldDirection) const;
+	bool GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const;
+
+	UPROPERTY(EditAnywhere)
+	float CrosshairXLocation = 0.5;
+	UPROPERTY(EditAnywhere)
+	float CrosshairYLocation = 0.33333;
+	UPROPERTY(EditAnywhere)
+	float LineTraceRange = 1000000;
 };
