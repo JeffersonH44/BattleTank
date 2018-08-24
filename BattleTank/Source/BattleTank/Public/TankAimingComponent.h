@@ -8,7 +8,10 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankAimingComponent.generated.h"
 
+/// Forward declaration (useful for circular dependencies)
+class UTankBarrel;
 
+// Holds barrel's properties and Elevate method
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
@@ -28,8 +31,8 @@ public:
 
 	void AimAt(FVector WorldSpaceAim, float LaunchSpeed);
 	
-	void SetBarrel(UStaticMeshComponent* Barrel);
+	void SetBarrel(UTankBarrel* Barrel);
 private:
-	UStaticMeshComponent * Barrel = nullptr;
+	UTankBarrel* Barrel = nullptr;
 	void MoveBarrelTowards(FVector AimDirection);
 };
