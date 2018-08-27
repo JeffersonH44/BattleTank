@@ -2,6 +2,8 @@
 
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
+
 #define OUT
 
 // Sets default values for this component's properties
@@ -78,6 +80,11 @@ void UTankAimingComponent::SetBarrel(UTankBarrel * Barrel)
 	this->Barrel = Barrel;
 }
 
+void UTankAimingComponent::SetTurret(UTankTurret * Turret)
+{
+	this->Turret = Turret;
+}
+
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
 	// Calculate delta rotator given the current barrel rotation and aim direction
@@ -85,6 +92,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto AimRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimRotator - BarrelRotator;
 	
-	Barrel->Elevate(5);
+	Barrel->Elevate(DeltaRotator.Pitch);
+	Turret->Rotate(DeltaRotator.Yaw);
 }
 
