@@ -2,52 +2,25 @@
 
 #include "TankAIController.h"
 #include "Tank.h"
+#include "Engine/World.h"
 
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto TankController = GetControlledTank();
-	if (!TankController)
-	{
-		UE_LOG(LogTemp, Error, TEXT("No AI tank controller!!!"))
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("TankAIController possessing: %s"), *(TankController->GetName()))
-	}
-
-	auto PlayerTank = GetPlayerTank();
-	if (!PlayerTank) 
-	{
-		UE_LOG(LogTemp, Error, TEXT("No player controller found from: %s"), *(TankController->GetName()))
-	}
-	else 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Aiming at: %s"), *(PlayerTank->GetName()))
-	}
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	auto PlayerTank = GetPlayerTank();
-	auto OurTank = GetControlledTank();
-	if (!PlayerTank || !OurTank) return;
-
-	OurTank->AimAt(PlayerTank->GetActorLocation());
-}
-
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());;
-}
-
-ATank* ATankAIController::GetPlayerTank() const
-{
-	auto PlayerController = GetWorld()->GetFirstPlayerController();
-	if (!PlayerController) return nullptr;
-
-	return Cast<ATank>(PlayerController->GetPawn());
+	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	auto ControlledTank = Cast<ATank>(GetPawn());
+	if (PlayerTank) 
+	{
+		auto PlayerLocation = PlayerTank->GetActorLocation();
+		// UE_LOG(LogTemp, Warning, TEXT("Player location at: %s"), *PlayerLocation.ToString())
+		ControlledTank->AimAt(PlayerLocation);
+		ControlledTank->Fire();
+	}
 }
 
 

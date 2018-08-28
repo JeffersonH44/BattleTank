@@ -2,6 +2,7 @@
 
 #include "TankBarrel.h"
 #include "Engine/World.h"
+#include "Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h"
 
 void UTankBarrel::Elevate(float RelativeElevationSpeed) 
 {
@@ -13,5 +14,3 @@ void UTankBarrel::Elevate(float RelativeElevationSpeed)
 
 	SetRelativeRotation(FRotator(Elevation, 0, 0));
 }
-
-
