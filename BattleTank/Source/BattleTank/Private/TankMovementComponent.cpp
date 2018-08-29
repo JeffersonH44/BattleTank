@@ -6,8 +6,6 @@
 
 void UTankMovementComponent::IntendMoveForward(float Throw) 
 {
-	UE_LOG(LogTemp, Warning, TEXT("Intend move forward throw: %f"), Throw)
-
 	if (!LeftTrack || !RightTrack) return;
 	this->LeftTrack->SetThrottle(Throw);
 	this->RightTrack->SetThrottle(Throw);
@@ -28,4 +26,17 @@ void UTankMovementComponent::initialize(UTankTrack * LeftTrack, UTankTrack * Rig
 	this->RightTrack = RightTrack;
 
 	// TODO: prevent double speed due to dual control use
+}
+
+void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
+{
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+
+	auto ThrowForward = FVector::DotProduct(TankForward, AIForwardIntention);
+	auto ThrowRight = FVector::CrossProduct(TankForward, AIForwardIntention).Z;
+
+	IntendMoveForward(ThrowForward);
+	IntendTurnRight(ThrowRight);
+	//UE_LOG(LogTemp, Warning, TEXT("%s with move velocity: %s"), *Name, *AIForwardIntention)
 }

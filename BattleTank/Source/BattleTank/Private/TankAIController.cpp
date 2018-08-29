@@ -16,9 +16,10 @@ void ATankAIController::Tick(float DeltaTime)
 	auto ControlledTank = Cast<ATank>(GetPawn());
 	if (PlayerTank) 
 	{
-		auto PlayerLocation = PlayerTank->GetActorLocation();
-		// UE_LOG(LogTemp, Warning, TEXT("Player location at: %s"), *PlayerLocation.ToString())
-		ControlledTank->AimAt(PlayerLocation);
+		MoveToActor(PlayerTank, AcceptanceRadius);
+		
+		ControlledTank->AimAt(PlayerTank->GetActorLocation());
+
 		ControlledTank->Fire();
 	}
 }
