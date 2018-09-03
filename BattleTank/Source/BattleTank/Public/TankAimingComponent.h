@@ -11,6 +11,7 @@
 /// Forward declaration (useful for circular dependencies)
 class UTankBarrel;
 class UTankTurret;
+class AProjectile;
 
 // Enum for firing status
 UENUM()
@@ -40,6 +41,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* Barrel, UTankTurret* Turret);
 
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	void Fire();
+
+	// BlueprinReadWrite is necessary because of the hot reloading error on UE 4.20
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Setup")
+	TSubclassOf<AProjectile> ProjectileBlueprint;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -54,4 +61,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 4000;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ReloadTimeInSeconds = 3.0;
+
+	double LastFireTime = 0.0;
 };

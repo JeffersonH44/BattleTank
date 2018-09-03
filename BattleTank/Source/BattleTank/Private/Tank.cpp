@@ -15,34 +15,3 @@ ATank::ATank()
 	// TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 }
 
-void ATank::SetBarrelReference(UTankBarrel* Barrel)
-{
-	if (!ensure(Barrel)) return;
-	this->Barrel = Barrel;
-}
-
-void ATank::Fire()
-{
-
-	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-	if (!ensure(Barrel) || !isReloaded) return;
-
-	FVector ProjectileLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	FRotator ProjectileRotation = Barrel->GetSocketRotation(FName("Projectile"));
-	// Spawn a projectile at the socket location
-	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
-		ProjectileBlueprint, 
-		ProjectileLocation, 
-		ProjectileRotation
-		);
-
-	Projectile->LaunchProjectile(LaunchSpeed);
-	
-	LastFireTime = FPlatformTime::Seconds();
-}
-
-void ATank::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
