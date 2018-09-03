@@ -21,9 +21,6 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
@@ -61,20 +58,16 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	}
 }
 
-void UTankAimingComponent::SetBarrel(UTankBarrel * Barrel)
+void UTankAimingComponent::Initialize(UTankBarrel * Barrel, UTankTurret * Turret)
 {
-	if (!Barrel) return;
+	if (!Barrel || !Turret) return;
 	this->Barrel = Barrel;
-}
-
-void UTankAimingComponent::SetTurret(UTankTurret * Turret)
-{
-	if (!Turret) return;
 	this->Turret = Turret;
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+	if (!Barrel || !Turret) return;
 	// Calculate delta rotator given the current barrel rotation and aim direction
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimRotator = AimDirection.Rotation();

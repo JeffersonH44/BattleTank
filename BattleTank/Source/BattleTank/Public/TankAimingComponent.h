@@ -21,7 +21,9 @@ enum class EFiringState : uint8
 	Locked
 };
 
-// Holds barrel's properties and Elevate method
+/**
+ * Responsible for helping the player to aim
+ */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
@@ -35,8 +37,8 @@ public:
 
 	void AimAt(FVector WorldSpaceAim, float LaunchSpeed);
 
-	void SetBarrel(UTankBarrel* Barrel);
-	void SetTurret(UTankTurret* Turret);
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialize(UTankBarrel* Barrel, UTankTurret* Turret);
 
 protected:
 	// Called when the game starts
