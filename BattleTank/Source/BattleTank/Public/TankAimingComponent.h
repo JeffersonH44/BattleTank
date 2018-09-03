@@ -33,8 +33,6 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UTankAimingComponent();
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void AimAt(FVector WorldSpaceAim);
 
@@ -45,19 +43,17 @@ public:
 	void Fire();
 
 	// BlueprinReadWrite is necessary because of the hot reloading error on UE 4.20
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Setup")
+	UPROPERTY(BlueprintReadWrite, Category = "Setup")
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Reloading;
 private:
-	void MoveBarrelTowards(FVector AimDirection);
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+	virtual void BeginPlay() override;
 
-	UTankBarrel* Barrel = nullptr;
-	UTankTurret* Turret = nullptr;
+	void MoveBarrelTowards(FVector AimDirection);
+	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 4000;
@@ -65,5 +61,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3.0;
 
+	UTankBarrel* Barrel = nullptr;
+	UTankTurret* Turret = nullptr;
+
+	FVector AimDirection;
 	double LastFireTime = 0.0;
 };
