@@ -45,6 +45,8 @@ public:
 	// BlueprinReadWrite is necessary because of the hot reloading error on UE 4.20
 	UPROPERTY(BlueprintReadWrite, Category = "Setup")
 	TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	EFiringState GetFiringState() const;
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Reloading;
@@ -56,7 +58,7 @@ private:
 	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float LaunchSpeed = 4000;
+	float LaunchSpeed = 23000;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3.0;

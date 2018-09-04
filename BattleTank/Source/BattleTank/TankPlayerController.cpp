@@ -49,9 +49,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	if (GetLookDirection(ScreenLocation, OUT LookDirection)) 
 	{
 		// UE_LOG(LogTemp, Warning, TEXT("LookDirection to: %s"), *LookDirection.ToString())
-		GetLookVectorHitLocation(LookDirection, OUT HitLocation);
-
-		return true;
+		return GetLookVectorHitLocation(LookDirection, OUT HitLocation);
 	}
 
 	// Linetrace along that LookDirection, and see what we hit...

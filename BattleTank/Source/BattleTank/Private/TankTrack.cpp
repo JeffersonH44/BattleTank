@@ -6,6 +6,7 @@
 UTankTrack::UTankTrack() 
 {
 	PrimaryComponentTick.bCanEverTick = false;
+	SetNotifyRigidBodyCollision(true);
 }
 
 void UTankTrack::BeginPlay()
@@ -16,7 +17,6 @@ void UTankTrack::BeginPlay()
 
 void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult & Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Hello world!!"))
 	DriveTrack();
 	ApplySidewaysForce();
 	Throttle = 0.0;
